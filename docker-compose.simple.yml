@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - PORT=5000
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.simple
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - REACT_APP_NETWORK=mainnet-beta
+    depends_on:
+      - backend
+    restart: unless-stopped 
