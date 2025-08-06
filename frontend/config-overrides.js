@@ -49,10 +49,10 @@ module.exports = function override(config) {
   }
   
   try {
+    // Only add Buffer polyfill, let Create React App handle process.env
     plugins.push(
       new webpack.DefinePlugin({
-        'global.Buffer': 'Buffer',
-        'process.env': JSON.stringify(process.env)
+        'global.Buffer': 'Buffer'
       })
     );
   } catch (error) {
@@ -66,7 +66,9 @@ module.exports = function override(config) {
     /Failed to parse source map/,
     /Module not found/,
     /Can't resolve/,
-    /BREAKING CHANGE/
+    /BREAKING CHANGE/,
+    /DefinePlugin/,
+    /Conflicting values for 'process.env'/
   ];
   
   return config;
