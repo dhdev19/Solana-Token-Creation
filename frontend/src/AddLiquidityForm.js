@@ -496,9 +496,11 @@ import {
   WhirlpoolIx,
   increaseLiquidityQuoteByInputTokenWithParamsUsingPriceSlippage
 } from "@orca-so/whirlpools-sdk";
+import { useWallet } from './WalletConnect';
 import BN from "bn.js";
 
 function AddLiquidityForm() {
+  const { wallet, publicKey, isConnected } = useWallet();
   const [amountA, setAmountA] = useState(1);
   const [amountB, setAmountB] = useState(1);
   const [status, setStatus] = useState("");
@@ -516,14 +518,13 @@ function AddLiquidityForm() {
     }
 
     const connection = new Connection("https://api.devnet.solana.com", "confirmed");
-    const wallet = window.solana;
 
-    if (!wallet || !wallet.publicKey) {
+    if (!isConnected || !wallet || !publicKey) {
       setStatus("❌ Phantom wallet not connected.");
       return;
     }
 
-    const walletPublicKey = new PublicKey(wallet.publicKey.toBase58());
+    const walletPublicKey = new PublicKey(publicKey.toBase58());
     const walletAdapter = {
       publicKey: walletPublicKey,
       signTransaction: wallet.signTransaction,

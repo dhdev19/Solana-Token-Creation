@@ -341,7 +341,71 @@ npm run setup
 
 ## 🚀 Deployment
 
-### Frontend Deployment (Netlify)
+### Option 1: Render Deployment (Recommended)
+
+#### Backend Deployment on Render
+
+1. **Create a Render account** at [render.com](https://render.com)
+
+2. **Create a new Web Service:**
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Select the repository
+
+3. **Configure the service:**
+   - **Name**: `coinlauncher-backend`
+   - **Root Directory**: `backend`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn app:app --bind 0.0.0.0:$PORT`
+   - **Plan**: Free (or choose paid plan)
+
+4. **Add Environment Variables:**
+   - `FLASK_ENV`: `production`
+   - `FLASK_DEBUG`: `0`
+   - `SOLANA_RPC_URL`: `https://api.devnet.solana.com`
+   - `SOLANA_NETWORK`: `devnet`
+   - `CORS_ORIGINS`: `https://your-frontend-url.onrender.com`
+
+5. **Deploy:**
+   - Click "Create Web Service"
+   - Render will automatically deploy your backend
+
+#### Frontend Deployment on Render
+
+1. **Create a new Static Site:**
+   - Click "New +" → "Static Site"
+   - Connect your GitHub repository
+   - Select the repository
+
+2. **Configure the site:**
+   - **Name**: `coinlauncher-frontend`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `build`
+   - **Plan**: Free (or choose paid plan)
+
+3. **Add Environment Variables:**
+   - `REACT_APP_API_URL`: `https://your-backend-url.onrender.com`
+   - `REACT_APP_SOLANA_RPC_URL`: `https://api.devnet.solana.com`
+   - `REACT_APP_NETWORK`: `devnet`
+   - `REACT_APP_ORCA_POOLS_URL`: `https://api.orca.so/v1/whirlpool/list`
+
+4. **Deploy:**
+   - Click "Create Static Site"
+   - Render will automatically deploy your frontend
+
+#### Update Frontend Configuration
+
+After deploying the backend, update your frontend's environment variables to point to the new backend URL:
+
+```env
+REACT_APP_API_URL=https://your-backend-url.onrender.com
+```
+
+### Option 2: Alternative Deployments
+
+#### Frontend Deployment (Netlify)
 
 1. **Build the project:**
 ```bash
@@ -355,7 +419,7 @@ npm install -g netlify-cli
 netlify deploy --prod --dir=build
 ```
 
-### Backend Deployment (Heroku)
+#### Backend Deployment (Heroku)
 
 1. **Create Heroku app:**
 ```bash

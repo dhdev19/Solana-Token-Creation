@@ -9,8 +9,10 @@ import {
   buildWhirlpoolClient,
   ORCA_WHIRLPOOL_PROGRAM_ID,
 } from "@orca-so/whirlpools-sdk";
+import { useWallet } from './WalletConnect';
 
 function RemoveLiquidityForm() {
+  const { wallet, publicKey, isConnected } = useWallet();
   const [status, setStatus] = useState("");
   const [positions, setPositions] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -22,13 +24,7 @@ function RemoveLiquidityForm() {
 
     const loadPositions = useCallback(async () => {
     setExplorerUrl("");
-    if (!window.solana?.publicKey) {
-      setStatus("Please connect Phantom wallet");
-      return;
-    }
-
-    // Additional validation for wallet connection
-    if (!window.solana.isConnected) {
+    if (!isConnected || !publicKey) {
       setStatus("Please connect Phantom wallet");
       return;
     }
@@ -38,25 +34,23 @@ function RemoveLiquidityForm() {
          try {
        // Test connection first
        console.log('Testing RPC connection...');
-       const testBalance = await connection.getBalance(window.solana.publicKey);
-       console.log('Connection test successful, balance:', testBalance / 1e9, 'SOL');
-       
-       const wallet = window.solana;
+             const testBalance = await connection.getBalance(publicKey);
+      console.log('Connection test successful, balance:', testBalance / 1e9, 'SOL');
        
                // Validate wallet public key more thoroughly
-        if (!wallet.publicKey) {
+        if (!publicKey) {
           throw new Error('Wallet public key is undefined');
         }
         
-        if (typeof wallet.publicKey.toBase58 !== 'function') {
+        if (typeof publicKey.toBase58 !== 'function') {
           throw new Error('Wallet public key is missing toBase58 method');
         }
 
-        console.log('Wallet public key validation passed:', wallet.publicKey.toBase58());
+        console.log('Wallet public key validation passed:', publicKey.toBase58());
 
         // Create provider for Orca SDK with proper validation
         // Convert wallet public key to Solana PublicKey object to ensure _bn property exists
-        const walletPublicKey = new PublicKey(wallet.publicKey.toBase58());
+        const walletPublicKey = new PublicKey(publicKey.toBase58());
         
         const walletAdapter = {
           publicKey: walletPublicKey,
@@ -190,32 +184,13 @@ function RemoveLiquidityForm() {
 
   useEffect(() => {
     // Only load positions if wallet is connected and has a valid public key
-    if (window.solana?.publicKey) {
+    if (isConnected && publicKey) {
       loadPositions();
+    } else {
+      setPositions([]);
+      setStatus("Please connect Phantom wallet");
     }
-
-    // Listen for wallet connection changes
-    const handleWalletChange = () => {
-      if (window.solana?.publicKey) {
-        loadPositions();
-      } else {
-        setPositions([]);
-        setStatus("Please connect Phantom wallet");
-      }
-    };
-
-    if (window.solana) {
-      window.solana.on('connect', handleWalletChange);
-      window.solana.on('disconnect', handleWalletChange);
-    }
-
-    return () => {
-      if (window.solana) {
-        window.solana.removeListener('connect', handleWalletChange);
-        window.solana.removeListener('disconnect', handleWalletChange);
-      }
-    };
-  }, [loadPositions]);
+  }, [isConnected, publicKey, loadPositions]);
 
   return (
     <div>
@@ -223,12 +198,7 @@ function RemoveLiquidityForm() {
       
              {/* Debug info */}
        <div style={{ fontSize: '12px', color: '#666', marginBottom: '10px' }}>
-         Wallet Status: {window.solana?.isConnected ? 'Connected' : 'Disconnected'}
-         {window.solana?.publicKey && (
-           <span> | Public Key: {window.solana.publicKey.toBase58().slice(0, 8)}...</span>
-         )}
-         <br />
-                   <span style={{ color: '#4CAF50' }}>
+         <span style={{ color: '#4CAF50' }}>
             ✅ Using compatible Orca SDK v0.12.5 - Fixed position fetching!
           </span>
        </div>
@@ -239,10 +209,10 @@ function RemoveLiquidityForm() {
       <button 
         onClick={() => {
           console.log('Wallet debug info:', {
-            isConnected: window.solana?.isConnected,
-            hasPublicKey: !!window.solana?.publicKey,
-            publicKeyType: typeof window.solana?.publicKey,
-            publicKeyValue: window.solana?.publicKey ? window.solana.publicKey.toBase58() : 'N/A'
+            isConnected: isConnected,
+            hasPublicKey: !!publicKey,
+            publicKeyType: typeof publicKey,
+            publicKeyValue: publicKey ? publicKey.toBase58() : 'N/A'
           });
         }}
         style={{ marginLeft: '10px', fontSize: '12px', padding: '5px' }}
@@ -255,7 +225,7 @@ function RemoveLiquidityForm() {
                  onClick={async () => {
            try {
              const connection = new Connection("https://api.devnet.solana.com");
-             const balance = await connection.getBalance(window.solana.publicKey);
+             const balance = await connection.getBalance(publicKey);
             console.log('Wallet balance:', balance / 1e9, 'SOL');
             setStatus(`✅ Wallet test successful! Balance: ${(balance / 1e9).toFixed(4)} SOL`);
           } catch (error) {

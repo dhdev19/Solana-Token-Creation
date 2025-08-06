@@ -33,24 +33,29 @@ import CreateTokenForm from './CreateTokenForm';
 import AddLiquidityForm from './AddLiquidityForm';
 import RemoveLiquidityForm from './RemoveLiquidityForm';
 import CreatePool from './CreatePool';
+import { WalletProvider } from './WalletConnect';
+import WalletConnect from './WalletConnect';
 
 const App = () => {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <div className="flex flex-col items-center pt-20">
-        <Navbar />
+    <WalletProvider>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <div className="flex flex-col items-center pt-20">
+          <Navbar />
 
-        <div className="w-full max-w-xl p-4 mt-6">
-          <Routes>
-            <Route path="/" element={<Navigate to="/create-token" />} />
-            <Route path="/create-token" element={<CreateTokenForm />} />
-            <Route path="/create-pool" element={<CreatePool />} />
-            <Route path="/add-liquidity" element={<AddLiquidityForm />} />
-            <Route path="/remove-liquidity" element={<RemoveLiquidityForm />} />
-          </Routes>
+          <div className="w-full max-w-xl p-4 mt-6">
+            <WalletConnect />
+            <Routes>
+              <Route path="/" element={<Navigate to="/create-token" />} />
+              <Route path="/create-token" element={<CreateTokenForm />} />
+              <Route path="/create-pool" element={<CreatePool />} />
+              <Route path="/add-liquidity" element={<AddLiquidityForm />} />
+              <Route path="/remove-liquidity" element={<RemoveLiquidityForm />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </WalletProvider>
   );
 };
 

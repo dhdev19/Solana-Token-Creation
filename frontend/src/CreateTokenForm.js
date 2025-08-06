@@ -179,11 +179,13 @@
 
 
 import React, { useState } from 'react';
+import { useWallet } from './WalletConnect';
 
 // Note: Metadata creation has been disabled to avoid Phantom wallet compatibility issues
 // The token will work perfectly without metadata, just appears as "Unknown Token"
 
 function CreateTokenForm() {
+  const { wallet, publicKey, isConnected } = useWallet();
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
   const [decimals, setDecimals] = useState(9);
@@ -200,13 +202,13 @@ function CreateTokenForm() {
     setMintAddress('');
     setExplorerUrl('');
 
-    if (!window.solana?.publicKey) {
+    if (!isConnected || !publicKey) {
       setError("Please connect your Phantom Wallet first.");
       setLoading(false);
       return;
     }
 
-    const walletAddress = window.solana.publicKey.toString();
+    const walletAddress = publicKey.toString();
 
     // Step 1: Create token
     const createResponse = await fetch('http://localhost:5000/create-token', {
@@ -258,7 +260,7 @@ function CreateTokenForm() {
       transaction.partialSign(mintKeypair);
       
       // Let Phantom wallet sign and send the transaction
-      const signature = await window.solana.signAndSendTransaction(transaction);
+      const signature = await wallet.signAndSendTransaction(transaction);
       console.log("Create Token TX Signature:", signature.signature);
       
     } catch (error) {
@@ -308,7 +310,7 @@ function CreateTokenForm() {
     const transaction = Transaction.populate(message, []);
     
     // Sign and send the transaction
-    const signedMint = await window.solana.signAndSendTransaction(transaction);
+    const signedMint = await wallet.signAndSendTransaction(transaction);
 
     console.log("Mint TX Signature:", signedMint.signature);
     setExplorerUrl(`https://explorer.solana.com/tx/${signedMint.signature}?cluster=devnet`);

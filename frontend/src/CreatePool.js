@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Connection, PublicKey, Transaction, SystemProgram, Keypair } from "@solana/web3.js";
+import { useWallet } from './WalletConnect';
 
 function CreatePool() {
+  const { wallet, publicKey, isConnected } = useWallet();
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
   const [amountA, setAmountA] = useState(1);
@@ -55,15 +57,13 @@ function CreatePool() {
       return;
     }
 
-    const wallet = window.solana;
-
-    if (!wallet || !wallet.publicKey) {
+    if (!isConnected || !wallet || !publicKey) {
       setStatus("❌ Phantom wallet not connected.");
       return;
     }
 
     try {
-      const walletPublicKey = new PublicKey(wallet.publicKey.toBase58());
+      const walletPublicKey = new PublicKey(publicKey.toBase58());
 
       // Test wallet connection first
       setStatus("🔍 Testing wallet connection...");
