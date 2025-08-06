@@ -29,6 +29,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import Home from './Home';
 import CreateTokenForm from './CreateTokenForm';
 import AddLiquidityForm from './AddLiquidityForm';
 import RemoveLiquidityForm from './RemoveLiquidityForm';
@@ -46,7 +47,7 @@ const App = () => {
           <div className="w-full max-w-xl p-4 mt-6">
             <WalletConnect />
             <Routes>
-              <Route path="/" element={<Navigate to="/create-token" />} />
+              <Route path="/" element={<Home />} />
               <Route path="/create-token" element={<CreateTokenForm />} />
               <Route path="/create-pool" element={<CreatePool />} />
               <Route path="/add-liquidity" element={<AddLiquidityForm />} />
