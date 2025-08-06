@@ -32,6 +32,7 @@ import Navbar from './Navbar';
 import CreateTokenForm from './CreateTokenForm';
 import AddLiquidityForm from './AddLiquidityForm';
 import RemoveLiquidityForm from './RemoveLiquidityForm';
+import CreatePool from './CreatePool';
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/create-token" />} />
             <Route path="/create-token" element={<CreateTokenForm />} />
+            <Route path="/create-pool" element={<CreatePool />} />
             <Route path="/add-liquidity" element={<AddLiquidityForm />} />
             <Route path="/remove-liquidity" element={<RemoveLiquidityForm />} />
           </Routes>

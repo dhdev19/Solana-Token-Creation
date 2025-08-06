@@ -180,39 +180,8 @@
 
 import React, { useState } from 'react';
 
-// Helper function to create metadata instruction data
-function createMetadataInstructionData(name, symbol) {
-  // CreateMetadataAccountV3 instruction (33)
-  const instruction = 33;
-  
-  // Bump seed (will be filled by the program)
-  const bump = 0;
-  
-  // Encode strings
-  const nameBytes = new TextEncoder().encode(name);
-  const symbolBytes = new TextEncoder().encode(symbol);
-  const uriBytes = new TextEncoder().encode(''); // Empty URI
-  
-  // Create the instruction data
-  const data = new Uint8Array([
-    instruction, // CreateMetadataAccountV3 instruction
-    bump, // Bump seed
-    ...new Uint8Array(new Uint32Array([nameBytes.length]).buffer), // Name length (4 bytes, little-endian)
-    ...nameBytes, // Name
-    ...new Uint8Array(new Uint32Array([symbolBytes.length]).buffer), // Symbol length (4 bytes, little-endian)
-    ...symbolBytes, // Symbol
-    ...new Uint8Array(new Uint32Array([uriBytes.length]).buffer), // URI length (4 bytes, little-endian)
-    ...uriBytes, // URI
-    ...new Uint8Array(new Uint16Array([0]).buffer), // Seller fee basis points (2 bytes, little-endian)
-    0, // Creators (null)
-    0, // Collection (null)
-    0, // Uses (null)
-    1, // Is mutable (true)
-    0, // Collection details (null)
-  ]);
-  
-  return data;
-}
+// Note: Metadata creation has been disabled to avoid Phantom wallet compatibility issues
+// The token will work perfectly without metadata, just appears as "Unknown Token"
 
 function CreateTokenForm() {
   const [name, setName] = useState('');
@@ -299,55 +268,12 @@ function CreateTokenForm() {
       return;
     }
 
-        // Step 1.6: Create token metadata using simplified approach
-    try {
-      console.log("Creating token metadata...");
-      
-      // Import required modules
-      const { PublicKey, Transaction, SystemProgram } = await import('@solana/web3.js');
-      
-      // Get metadata account PDA
-      const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
-      const [metadataAccount] = await PublicKey.findProgramAddress(
-        [
-          new TextEncoder().encode('metadata'),
-          METADATA_PROGRAM_ID.toBytes(),
-          new PublicKey(mint).toBytes(),
-        ],
-        METADATA_PROGRAM_ID
-      );
-      
-      // Create metadata instruction with proper account structure
-      const metadataInstruction = {
-        programId: METADATA_PROGRAM_ID,
-        keys: [
-          { pubkey: metadataAccount, isSigner: false, isWritable: true },
-          { pubkey: new PublicKey(mint), isSigner: false, isWritable: false },
-          { pubkey: new PublicKey(walletAddress), isSigner: true, isWritable: true },
-          { pubkey: new PublicKey(walletAddress), isSigner: true, isWritable: false },
-          { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
-        ],
-        data: createMetadataInstructionData(name, symbol)
-      };
-      
-      // Create and send metadata transaction
-      const metadataTx = new Transaction();
-      metadataTx.add(metadataInstruction);
-      
-      // Get recent blockhash for the metadata transaction
-      const connection = new (await import('@solana/web3.js')).Connection('https://api.devnet.solana.com');
-      const { blockhash } = await connection.getLatestBlockhash();
-      metadataTx.recentBlockhash = blockhash;
-      metadataTx.feePayer = new PublicKey(walletAddress);
-      
-      const metadataSignature = await window.solana.signAndSendTransaction(metadataTx);
-      console.log("✅ Metadata created successfully!");
-      console.log("🔗 Metadata TX Signature:", metadataSignature.signature);
-      
-    } catch (error) {
-      console.warn("Error creating metadata:", error);
-      console.log("Token will work without metadata, but will appear as 'Unknown Token' in Phantom Wallet");
-    }
+        // Step 1.6: Skip metadata creation to avoid Phantom wallet issues
+        // Metadata creation is complex and often fails with "Unexpected error"
+        // The token will work perfectly without metadata, just appears as "Unknown Token"
+        console.log("⏭️ Skipping metadata creation to avoid wallet compatibility issues");
+        console.log("ℹ️ Token will work without metadata, but will appear as 'Unknown Token' in Phantom Wallet");
+        console.log("💡 To add metadata later, use Metaplex tools or upgrade to a newer wallet version");
 
     // Step 2: Mint full supply to user wallet
     const mintResponse = await fetch('http://localhost:5000/mint-to-wallet', {
@@ -392,6 +318,21 @@ function CreateTokenForm() {
   return (
     <div>
       <h2>Create a New Solana Token</h2>
+      
+      <div style={{ 
+        backgroundColor: '#f0f9ff', 
+        border: '1px solid #0ea5e9', 
+        borderRadius: '8px', 
+        padding: '12px', 
+        marginBottom: '20px' 
+      }}>
+        <p style={{ margin: '0', fontSize: '14px', color: '#0369a1' }}>
+          <strong>ℹ️ Note:</strong> Token metadata creation is disabled to ensure compatibility with Phantom wallet. 
+          Your token will work perfectly but may appear as "Unknown Token" in wallets. 
+          You can add metadata later using Metaplex tools.
+        </p>
+      </div>
+      
       <form onSubmit={handleSubmit}>
         <div>
           <label>Token Name:</label>

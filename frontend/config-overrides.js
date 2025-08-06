@@ -31,7 +31,9 @@ module.exports = function override(config) {
     ...config.resolve.alias,
     '@solana/spl-token-group': path.resolve(__dirname, 'src/utils/emptyModule.js'),
     'process/browser': require.resolve('process/browser'),
-    'process': require.resolve('process/browser')
+    'process': require.resolve('process/browser'),
+    // Add specific alias for codecs to ensure proper resolution
+    '@solana/codecs': path.resolve(__dirname, 'node_modules/@solana/codecs')
   };
   
   // Safely add plugins
@@ -52,7 +54,8 @@ module.exports = function override(config) {
     // Only add Buffer polyfill, let Create React App handle process.env
     plugins.push(
       new webpack.DefinePlugin({
-        'global.Buffer': 'Buffer'
+        'global.Buffer': 'Buffer',
+        'global.process': 'process'
       })
     );
   } catch (error) {
@@ -68,7 +71,9 @@ module.exports = function override(config) {
     /Can't resolve/,
     /BREAKING CHANGE/,
     /DefinePlugin/,
-    /Conflicting values for 'process.env'/
+    /Conflicting values for 'process.env'/,
+    /Critical dependency/,
+    /Module parse failed/
   ];
   
   return config;

@@ -8,8 +8,12 @@ import reportWebVitals from './reportWebVitals';
 import { Buffer } from 'buffer';
 import process from 'process';
 
+// Ensure process is available globally
 if (typeof window !== 'undefined') {
   window.process = process;
+}
+if (typeof global !== 'undefined') {
+  global.process = process;
 }
 
 // Ensure Buffer is available globally
@@ -18,6 +22,11 @@ if (typeof window !== 'undefined') {
 }
 if (typeof global !== 'undefined') {
   global.Buffer = Buffer;
+}
+
+// Ensure BigInt is available
+if (typeof window !== 'undefined' && !window.BigInt) {
+  console.warn('BigInt not available in this environment');
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
