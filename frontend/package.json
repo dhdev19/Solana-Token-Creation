@@ -26,10 +26,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "setup": "node setup.js",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "node setup.js"
   },
   "eslintConfig": {
     "extends": [

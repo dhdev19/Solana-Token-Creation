@@ -266,6 +266,33 @@ npm install
 npm install buffer crypto-browserify stream-browserify process
 ```
 
+4. **react-app-rewired configuration errors:**
+```bash
+# Run the setup script
+npm run setup
+
+# Or install dependencies manually
+npm install buffer crypto-browserify stream-browserify process
+npm install --save-dev react-app-rewired
+
+# If still having issues, try without react-app-rewired
+npm run eject
+# Then manually add Buffer polyfill to webpack config
+```
+
+5. **Module resolution errors:**
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# Run setup script
+npm run setup
+```
+
 #### Wallet Issues
 
 1. **Phantom not connecting:**
