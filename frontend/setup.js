@@ -21,16 +21,19 @@ const requiredDeps = [
 
 console.log('📦 Checking and installing required dependencies...\n');
 
-// Install required dependencies
-try {
-  console.log('Installing polyfill dependencies...');
-  execSync('npm install buffer crypto-browserify stream-browserify process', { stdio: 'inherit' });
-  
-  console.log('Installing react-app-rewired...');
-  execSync('npm install --save-dev react-app-rewired', { stdio: 'inherit' });
-  
-  console.log('✅ All dependencies installed successfully!\n');
-} catch (error) {
+  // Install required dependencies
+  try {
+    console.log('Installing polyfill dependencies...');
+    execSync('npm install buffer crypto-browserify stream-browserify process', { stdio: 'inherit' });
+    
+    console.log('Installing react-app-rewired...');
+    execSync('npm install --save-dev react-app-rewired', { stdio: 'inherit' });
+    
+    console.log('Downgrading react-router-dom to stable version...');
+    execSync('npm install react-router-dom@^6.20.1', { stdio: 'inherit' });
+    
+    console.log('✅ All dependencies installed successfully!\n');
+  } catch (error) {
   console.error('❌ Error installing dependencies:', error.message);
   console.log('\n🔄 Trying alternative installation method...');
   

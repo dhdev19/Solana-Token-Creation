@@ -30,6 +30,8 @@ module.exports = function override(config) {
   config.resolve.alias = {
     ...config.resolve.alias,
     '@solana/spl-token-group': path.resolve(__dirname, 'src/utils/emptyModule.js'),
+    'process/browser': require.resolve('process/browser'),
+    'process': require.resolve('process/browser')
   };
   
   // Safely add plugins
@@ -49,7 +51,8 @@ module.exports = function override(config) {
   try {
     plugins.push(
       new webpack.DefinePlugin({
-        'global.Buffer': 'Buffer'
+        'global.Buffer': 'Buffer',
+        'process.env': '{}'
       })
     );
   } catch (error) {
@@ -62,7 +65,8 @@ module.exports = function override(config) {
   config.ignoreWarnings = [
     /Failed to parse source map/,
     /Module not found/,
-    /Can't resolve/
+    /Can't resolve/,
+    /BREAKING CHANGE/
   ];
   
   return config;
