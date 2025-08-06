@@ -52,7 +52,7 @@ module.exports = function override(config) {
     plugins.push(
       new webpack.DefinePlugin({
         'global.Buffer': 'Buffer',
-        'process.env': '{}'
+        'process.env': JSON.stringify(process.env)
       })
     );
   } catch (error) {

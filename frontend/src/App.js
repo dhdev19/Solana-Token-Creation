@@ -35,7 +35,7 @@ import RemoveLiquidityForm from './RemoveLiquidityForm';
 
 const App = () => {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="flex flex-col items-center pt-20">
         <Navbar />
 
