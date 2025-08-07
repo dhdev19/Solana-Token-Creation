@@ -196,7 +196,8 @@ function CreateTokenForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSocialLinks, setShowSocialLinks] = useState(false); // Add this at top
-  
+  const base = process.env.REACT_APP_API_URL;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -214,7 +215,7 @@ function CreateTokenForm() {
     const walletAddress = publicKey.toString();
 
     // Step 1: Create token
-    const createResponse = await fetch('http://localhost:5000/create-token', {
+    const createResponse = await fetch(`${base}/create-token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -281,7 +282,7 @@ function CreateTokenForm() {
         console.log("💡 To add metadata later, use Metaplex tools or upgrade to a newer wallet version");
 
     // Step 2: Mint full supply to user wallet
-    const mintResponse = await fetch('http://localhost:5000/mint-to-wallet', {
+    const mintResponse = await fetch(`${base}/mint-to-wallet`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
