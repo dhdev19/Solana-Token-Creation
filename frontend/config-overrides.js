@@ -30,8 +30,8 @@ module.exports = function override(config) {
   config.resolve.alias = {
     ...config.resolve.alias,
     '@solana/spl-token-group': path.resolve(__dirname, 'src/utils/emptyModule.js'),
-    'process/browser': require.resolve('process/browser'),
-    'process': require.resolve('process/browser'),
+    //'process/browser': require.resolve('process/browser'),
+    //'process': require.resolve('process/browser'),
     // Add specific alias for codecs to ensure proper resolution
     '@solana/codecs': path.resolve(__dirname, 'node_modules/@solana/codecs')
   };
@@ -42,7 +42,7 @@ module.exports = function override(config) {
   try {
     plugins.push(
       new webpack.ProvidePlugin({
-        process: 'process/browser',
+        //process: 'process/browser',
         Buffer: ['buffer', 'Buffer']
       })
     );
