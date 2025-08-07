@@ -10,8 +10,8 @@ module.exports = function override(config) {
     Object.assign(fallback, {
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
-      "buffer": require.resolve("buffer/"),
-      "process": require.resolve("process/browser")
+      "buffer": require.resolve("buffer/")
+      //"process": require.resolve("process/browser")
     });
   } catch (error) {
     console.warn('Some polyfill modules not found, using fallbacks:', error.message);
@@ -19,8 +19,8 @@ module.exports = function override(config) {
     Object.assign(fallback, {
       "crypto": false,
       "stream": false,
-      "buffer": false,
-      "process": false
+      "buffer": false
+      //"process": false
     });
   }
   
@@ -33,6 +33,7 @@ module.exports = function override(config) {
     //'process/browser': require.resolve('process/browser'),
     //'process': require.resolve('process/browser'),
     // Add specific alias for codecs to ensure proper resolution
+    'process': path.resolve(__dirname, 'src/utils/processPolyfill.js'),
     '@solana/codecs': path.resolve(__dirname, 'node_modules/@solana/codecs')
   };
   
@@ -51,7 +52,7 @@ module.exports = function override(config) {
   }
   
   try {
-    // Only add Buffer polyfill, let Create React App handle process.env
+    // Only add Buffer polyfill, let Create React App handle .env
     plugins.push(
       new webpack.DefinePlugin({
         'global.Buffer': 'Buffer',
