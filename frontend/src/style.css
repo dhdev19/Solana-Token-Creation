@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+.mainwrapper {
+    background: #f8f9fc;
+}
+
+.createtokensec {
+    padding: 40px 0 40px 0;
+}
+
+.createtokensec h2 {
+    padding: 0px;
+    margin: 0px;
+    font-size: 35px;
+    text-align: center;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+}
+.createtokensec p {
+    padding: 5px 0 0 0;
+    margin: 0px;
+    text-align: center;
+    font-size: 17px;
+    color: #4b5563;
+    font-family: "DM Sans", sans-serif;
+}
+
+.formbg {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+    background: #fff;
+    border: #e5e7eb solid 1px;
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+.formbg label {
+    font-family: "DM Sans", sans-serif;
+    color: #000;
+    font-size: 16px;
+    padding: 0 0 6px 0;
+}
+.formbg .row{
+    margin-bottom: 20px;
+}
+
+.formbg .form-control {
+    background: #f8f9fc;
+    padding: 10px 10px 10px 10px;
+    border: #e5e7eb solid 1px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+}
+.formbg input[type=file] {
+    border: #c6c6c6 dashed 2px;
+    height: 180px;
+}
+
+.formbg .btn-primary {
+    font-family: "DM Sans", sans-serif;
+    padding: 10px 20px 10px 10px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.formbg .form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: none;
+}
+
+.formbg span {
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    color: #6c727f;
+    padding: 5px 0 0 0;
+    display: inline-block;
+}
+.formbg .form-control:focus {
+    color: var(--bs-body-color);
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: none;
+    background: #f8f9fc;
+    border: #e5e7eb solid 1px;
+}
+
+.sociallinksec {
+    position: relative;
+}
+
+.sociallinksec h4 {
+    font-family: "DM Sans", sans-serif;
+    font-size: 17px;
+    color: #000;
+    padding: 0px;
+    margin: 0px;
+}
+
+.sociallinksec p {
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    color: #6c727f;
+    padding: 0px 0 10px 0;
+    display: inline-block;
+    margin: 0 0 0 0;
+}
+
+
+.socialink .col-lg-6{
+    width: 48%;
+}
+
+.socialink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 0 0 10px 0;
+}
+
+.socialink label {
+    font-family: "DM Sans", sans-serif;
+    color: #000;
+    font-size: 14px;
+    padding: 0 0 6px 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #6f42c1; /* purple */
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}

@@ -181,6 +181,7 @@
 import React, { useState } from 'react';
 import { useWallet } from './WalletConnect';
 
+
 // Note: Metadata creation has been disabled to avoid Phantom wallet compatibility issues
 // The token will work perfectly without metadata, just appears as "Unknown Token"
 
@@ -194,6 +195,8 @@ function CreateTokenForm() {
   const [explorerUrl, setExplorerUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showSocialLinks, setShowSocialLinks] = useState(false); // Add this at top
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -319,8 +322,18 @@ function CreateTokenForm() {
 
   return (
     <div>
-      <h2>Create a New Solana Token</h2>
+      <div className='createtokensec'>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-lg-12'>
+            <h2>Create a New Solana Token</h2>
+      <p>Launch your Solana token in minutes with our easy-to-use platform</p>
+          </div>
+        </div>
+      </div>
+      </div>
       
+      {/*
       <div style={{ 
         backgroundColor: '#f0f9ff', 
         border: '1px solid #0ea5e9', 
@@ -334,48 +347,154 @@ function CreateTokenForm() {
           You can add metadata later using Metaplex tools.
         </p>
       </div>
+     */}
+
+      <div className='container'>
+     <div className='formbg'>
       
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Token Name:</label>
+        <div className='row'>
+          <div className='col-lg-12'>
+          <form onSubmit={handleSubmit}>
+            <div className='row'>
+        <div className='col-lg-6'>
+          <label>Token Name*</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
+            required className='form-control'
+            placeholder='Token name (e.g., Solana)'
           />
         </div>
-        <div>
-          <label>Token Symbol:</label>
+
+        <div className='col-lg-6'>
+          <label>Token Symbol*</label>
           <input
             type="text"
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
             required
+            className='form-control'
+            placeholder='Token symbol (e.g., SOL)'
           />
         </div>
-        <div>
-          <label>Decimals:</label>
+
+    </div>
+
+          <div className='row'>
+        <div className='col-lg-6'>
+          <label>Decimals*</label>
           <input
             type="number"
             value={decimals}
             onChange={(e) => setDecimals(e.target.value)}
             required
+            className='form-control'
           />
+          <span>Most meme coins use 9 decimals</span>
         </div>
-        <div>
-          <label>Total Supply:</label>
+        <div className='col-lg-6'>
+          <label>Total Supply*</label>
           <input
             type="number"
             value={totalSupply}
             onChange={(e) => setTotalSupply(e.target.value)}
             required
+            className='form-control'
           />
+          <span>Most meme coins usually have 1B supply</span>
         </div>
-        <button type="submit" disabled={loading}>
+      </div> 
+
+      <div className='row'>
+        <div className='col-lg-6'>
+          <label>Image</label>
+          <input
+            type="file"
+            className='form-control'
+          />
+          <span>Most meme coins use a squared 1000x1000 logo</span>
+        </div>
+        <div className='col-lg-6'>
+          <label>Description*</label>
+          <textarea  className='form-control' rows={7} placeholder='Describe your token purpose and vision'></textarea>
+             
+           
+        </div>
+      </div> 
+
+      <div className='row'>
+        <div className='col-lg-6'>
+  <div className='sociallinksec'>
+    <div className='d-flex align-items-center justify-content-between mb-2'>
+      <div>
+        <h4 className='mb-0'>Add Social Links & Tags</h4>
+        <p className='text-muted' style={{ fontSize: '14px' }}>Add links to your token metadata</p>
+      </div>
+      <label className="toggle-switch">
+        <input
+          type="checkbox"
+          checked={showSocialLinks}
+          onChange={() => setShowSocialLinks(!showSocialLinks)}
+        />
+        <span className="toggle-slider"></span>
+      </label>
+    </div>
+
+    {showSocialLinks && (
+      <div className='sociallinkswrapper'>
+        <div className='socialink d-flex flex-wrap mb-3'>
+          <div className='col-lg-6 pe-2'>
+            <label>Website</label>
+            <input
+              type="text"
+              className='form-control'
+              placeholder='https://yourproject.com'
+            />
+          </div>
+          <div className='col-lg-6 ps-2'>
+            <label>Twitter</label>
+            <input
+              type="text"
+              className='form-control'
+              placeholder='https://twitter.com/yourtwitter'
+            />
+          </div>
+        </div>
+        <div className='socialink d-flex flex-wrap'>
+          <div className='col-lg-6 pe-2'>
+            <label>Telegram</label>
+            <input
+              type="text"
+              className='form-control'
+              placeholder='https://t.me/yourtelegram'
+            />
+          </div>
+          <div className='col-lg-6 ps-2'>
+            <label>Discord</label>
+            <input
+              type="text"
+              className='form-control'
+              placeholder='https://discord.gg/yourdiscord'
+            />
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+      </div>
+
+        <button className='btn btn-primary' type="submit" disabled={loading}>
           {loading ? 'Creating Token...' : 'Create Token'}
         </button>
       </form>
+          </div>
+        </div>
+      </div>
+     </div>
+      
+      
 
       {mintAddress && (
         <div>

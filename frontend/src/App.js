@@ -36,6 +36,8 @@ import RemoveLiquidityForm from './RemoveLiquidityForm';
 import CreatePool from './CreatePool';
 import { WalletProvider } from './WalletConnect';
 import WalletConnect from './WalletConnect';
+import 'bootstrap/dist/css/bootstrap.min.css'; // ✅ Bootstrap included
+import './style.css'; // 👈 Make sure the path is correct
 
 const App = () => {
   return (
@@ -44,7 +46,7 @@ const App = () => {
         <div className="flex flex-col items-center pt-20">
           <Navbar />
 
-          <div className="w-full max-w-xl p-4 mt-6">
+          <div className="w-full mainwrapper">
             <WalletConnect />
             <Routes>
               <Route path="/" element={<Home />} />
