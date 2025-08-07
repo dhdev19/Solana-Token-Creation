@@ -43,7 +43,8 @@ import './style.css'; // 👈 Make sure the path is correct
 const App = () => {
   return (
     <WalletProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      // <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+         <Router>
         <div className="flex flex-col items-center pt-20">
           <Navbar />
 
